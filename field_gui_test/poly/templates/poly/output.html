@@ -1,0 +1,10 @@
+<h3 >Polynomials of degree = {{degree}}</h3>
+<div class="row">
+    <ul>
+        {% for polys in queryset %}
+          <li>
+            {{polys}}
+          </li>
+        {% endfor %}
+    </ul>
+</div>
