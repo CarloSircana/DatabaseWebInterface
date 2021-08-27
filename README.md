@@ -4,8 +4,7 @@
 Target: Create a website for the database of number fields, similar to https://www.lmfdb.org/NumberField/ or http://galoisdb.math.upb.de/.
 
 Steps already done:
-First simple queries by degree.
-Add signature, discriminant, cm property.
+First simple queries by degree,signature, discriminant, cm property.
 
 TODO:
 Set up raw queries and convert the code to use simple queries.
