@@ -24,9 +24,14 @@ Something like the first table in https://www.lmfdb.org/NumberField/stats. Under
 
 
 Queries with galois group:
-2 different fields for the html interface: - Integer for transitive group id
-                                          - Pair of integers for small group id (corresponding to group_order and small_group_id)
-                                          
+2 different fields for the html interface: 
+
+- Integer for transitive group id
+
+- Pair of integers for small group id (corresponding to group_order and small_group_id)
+
+
+
 To perform the query in the galois_group table, you also need the degree.
 degree + transitive_group_id or degree + group_order + small_group_id uniquely identify the group.
 
