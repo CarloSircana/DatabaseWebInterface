@@ -33,7 +33,7 @@ Queries with galois group:
 
 
 To perform the query in the galois_group table, you also need the degree.
-degree + transitive_group_id or degree + group_order + small_group_id uniquely identify the group.
+degree + transitive_group_id or degree + group_order + small_group_id uniquely identifies the group.
 
 No nested queries: We need to check that the required group is in the the table.
 First, we search for the group, meaning that we want the group_id (primary key in the galois_group table). If the group is missing, just return empty page.
