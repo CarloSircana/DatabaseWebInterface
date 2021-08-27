@@ -8,7 +8,9 @@ First simple queries by degree,signature, discriminant, cm property.
 
 TODO:
 Set up raw queries and convert the code to use simple queries.
-Output: polynomial, discriminant, signature
+Output: polynomial, discriminant, signature.
+
+
 Sanity checks:
 - degree >= 1
 - signature (r, s) => r>=0 , s >= 0, r+2*s = degree.
