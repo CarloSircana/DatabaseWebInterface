@@ -48,7 +48,7 @@ Print them both (grh value and discriminant_bound), together with the group data
 
 
 Next steps:
-Add class group, galois group queries.
+Add class group queries.
 Statistics page
 Completeness data queries.
 Source of data.
