@@ -12,10 +12,15 @@ Set up raw queries and convert the code to use simple queries.
 Output: polynomial, discriminant, signature
 Sanity checks:
 - degree >= 1
-- signature (r, s) => r>=0 , s >= 0, r+2*s = degree
+- signature (r, s) => r>=0 , s >= 0, r+2*s = degree.
+
+
+
 
 Create tables:
 Something like the first table in https://www.lmfdb.org/NumberField/stats. Understand how to make columns and rows in html.
+
+
 
 Queries with galois group:
 2 different fields for the html interface: - Integer for transitive group id
