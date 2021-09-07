@@ -15,6 +15,11 @@ def index(request):
     #return HttpResponse('adsasdkfjbsdhf')
 
 def output(request):
+    # input_degree = None
+    # input_disc = None
+    # input_cm = None
+    r = ''
+    
     input_degree = request.GET.get('degree')
     input_disc = request.GET.get('discriminant')
     input_cm = request.GET.get('cm')
@@ -26,23 +31,54 @@ def output(request):
             if input_cm == '' or input_cm == None:
                 if input_sig == '' or input_sig == None:
                     return render(request, 'poly/index.html')
-    
-    sig = input_sig.split(',')
 
     poly = Helper()
+    
+    ## signature check
+    if input_sig != '' and input_sig is not None:
+        r,s = poly.format_signature(input_sig)
+        if r < 0 or s < 0:
+            return render(request, 'poly/index.html')
 
-    if input_degree != '' and input_disc == '':
-        output_list = poly.degree_(input_degree)
-    elif input_degree == '' and input_disc != '':
-        output_list = poly.disc_(input_disc)
-    elif input_degree != '' and input_disc != '':
-        output_list = poly.degree_disc_(input_disc,input_degree)
-    else:
-        output_list = poly.signature_(sig[0],sig[1])
+        if input_degree == '' or input_degree == None:
+            input_degree = r+(2*s)
+            input_degree = str(input_degree)
+        elif r+(2*s) != int(input_degree):      
+            return render(request, 'poly/index.html')
+        elif ',' in input_degree:
+            return render(request, 'poly/index.html')
+
     
 
+    ## degree check
+    if input_degree != '' and input_degree is not None:
+        if ',' not in input_degree:
+            if int(input_degree) < 1:   
+                return render(request, 'poly/index.html')
+        else:
+            degree_range = input_degree.split(',')
+            if int(degree_range[0]) < 1 or int(degree_range[1]) < 1:
+                return render(request, 'poly/index.html')
+
+
+    # if input_degree != '' and input_disc == '':
+    #     output_list = poly.degree_(input_degree)
+    # elif input_degree == '' and input_disc != '':
+    #     output_list = poly.disc_(input_disc)
+    # elif input_degree != '' and input_disc != '':
+    #     output_list = poly.degree_disc_(input_disc,input_degree)
+    # else:
+    #     output_list = poly.signature_(sig[0],sig[1])
+
+    
+    output_list = poly.raw_query(input_degree,input_disc, input_cm,r)
+    # print(output_dict)
+    #output_dict = {'polynomials': output_polys, 'discriminants': output_discs}
+
     #print(output_list)
-    context = {'degree': input_degree, 'discriminant':input_disc, 'queryset': output_list}
+    input_list = ['degree: ' + input_degree,'discriminant: ' + input_disc, 'cm: '+ input_cm, 'real_embeddings: ' + r]
+
+    context = {'input_list': input_list, 'queryset': output_list[:10]}
     #print((polys[0]))
     #return HttpResponse(output)
     return render(request, 'poly/output.html',context)

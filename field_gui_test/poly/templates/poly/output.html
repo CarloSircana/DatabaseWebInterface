@@ -1,6 +1,25 @@
-<h3 >Polynomials of degree = {{degree}}</h3>
-<h3 >Polynomials of discriminant = {{discriminant}}</h3>
-<div class="row">
+<h3 >polynomials</h3>
+  <ul>
+    {% for inputs in input_list %}
+      <li>
+        {{inputs}}
+      </li>
+    {% endfor %}
+  </ul>
+<h3 ></h3>
+<!-- <table summary="">
+  <tr><th>Polynomials</th><th>discriminant</th></tr>
+  <-- {% for key,value in queryset.items %} -->
+    <!-- {% for v in value %} -->
+      <!-- <tr>    -->
+        <!-- <td>{{queryset.polynomial}}</td> -->
+        <!-- <td>{{queryset.discriminant}}</td> -->
+      <!-- </tr>  -->
+    <!-- {% endfor %}  -->
+  <!-- {% endfor %} -->
+  <!-- </table> --> 
+
+<div class="row"> 
     <ul>
         {% for polys in queryset %}
           <li>
