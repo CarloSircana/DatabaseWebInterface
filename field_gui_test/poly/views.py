@@ -43,6 +43,7 @@ def output(request):
         if input_degree == '' or input_degree == None:
             input_degree = r+(2*s)
             input_degree = str(input_degree)
+
         elif r+(2*s) != int(input_degree):      
             return render(request, 'poly/index.html')
         elif ',' in input_degree:
@@ -71,14 +72,16 @@ def output(request):
     #     output_list = poly.signature_(sig[0],sig[1])
 
     
-    output_list = poly.raw_query(input_degree,input_disc, input_cm,r)
-    # print(output_dict)
-    #output_dict = {'polynomials': output_polys, 'discriminants': output_discs}
+    output_polys, output_discs = poly.raw_query(input_degree,input_disc, input_cm,r)
 
-    #print(output_list)
-    input_list = ['degree: ' + input_degree,'discriminant: ' + input_disc, 'cm: '+ input_cm, 'real_embeddings: ' + r]
+    output_list = zip(output_polys[:10], output_discs[:10])
 
-    context = {'input_list': input_list, 'queryset': output_list[:10]}
+    #for polys,discs in output_list:
+        #print(polys,discs)
+
+    input_list = ['degree: ' + str(input_degree),'discriminant: ' + str(input_disc), 'cm: '+ input_cm, 'real_embeddings: ' + str(r)]
+
+    context = {'input_list': input_list, 'queryset': output_list }
     #print((polys[0]))
     #return HttpResponse(output)
     return render(request, 'poly/output.html',context)

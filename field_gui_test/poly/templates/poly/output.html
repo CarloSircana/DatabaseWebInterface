@@ -6,20 +6,17 @@
       </li>
     {% endfor %}
   </ul>
-<h3 ></h3>
-<!-- <table summary="">
+<table summary="">
   <tr><th>Polynomials</th><th>discriminant</th></tr>
-  <-- {% for key,value in queryset.items %} -->
-    <!-- {% for v in value %} -->
-      <!-- <tr>    -->
-        <!-- <td>{{queryset.polynomial}}</td> -->
-        <!-- <td>{{queryset.discriminant}}</td> -->
-      <!-- </tr>  -->
-    <!-- {% endfor %}  -->
-  <!-- {% endfor %} -->
-  <!-- </table> --> 
+   {% for polys, discs in queryset %}   
+      <tr>   
+        <td>{{polys}}</td>
+        <td>{{discs}}</td>
+      </tr> 
+    {% endfor %}
+</table> 
 
-<div class="row"> 
+<!-- <div class="row"> 
     <ul>
         {% for polys in queryset %}
           <li>
@@ -27,4 +24,4 @@
           </li>
         {% endfor %}
     </ul>
-</div>
+</div> -->

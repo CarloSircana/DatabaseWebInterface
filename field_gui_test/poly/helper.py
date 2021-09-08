@@ -179,7 +179,6 @@ class Helper():
         for k, v in query_data.items():
             if k == "degree":
                 data = v
-                print(data)
                 if data is not None and data != '':
                     if not first:
                         query += " AND"
@@ -193,7 +192,6 @@ class Helper():
                         query += " degree BETWEEN " + degree_range[0] + ' AND ' + degree_range[1] 
             elif k == "discriminant":
                 data = v
-                print(data)
                 if data is not None and data != '':
                     if not first:
                         query += " AND"
@@ -225,12 +223,11 @@ class Helper():
                         first = False
                     query += " real_embeddings = " + str(data)
 
-        print(query)
+        #print(query)
 
         cursor = connection.cursor()
         cursor.execute(query + 'ORDER BY degree')
         polys = cursor.fetchall()
-        #print(polys)
 
         output_polys = []
         output_discs = []
@@ -238,7 +235,8 @@ class Helper():
             output_polys = output_polys + self.format_polynomials(polys[i])
             output_discs.append(str(polys[i][1]))
 
-        return output_polys
+
+        return output_polys, output_discs
 
     
     def format_signature(self, input_sig):
