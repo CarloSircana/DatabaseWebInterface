@@ -1,4 +1,4 @@
-from .models import Field
+from .models import Field, GaloisGroup
 from django.db import connection
 
 class Helper():
@@ -223,7 +223,7 @@ class Helper():
                         first = False
                     query += " real_embeddings = " + str(data)
 
-        #print(query)
+        print(query)
 
         cursor = connection.cursor()
         cursor.execute(query + 'ORDER BY degree')
@@ -245,3 +245,64 @@ class Helper():
         s = int(sig[1])
 
         return r,s
+
+    def galois_group_search(self, input_degree, transitive_group_id=None, group_order_small_id=None):
+
+        if group_order_small_id:
+            group = group_order_small_id.split(',')
+            group_order = group[0]
+            small_group_id = group[1]
+        
+        query_data = {}
+        query_data['degree'] = input_degree
+        query_data['transitive_group_id'] = transitive_group_id
+        query_data['group_order_small_id'] = group_order_small_id
+
+
+
+        query = "SELECT field.polynomial, field.discriminant FROM field INNER JOIN galois_group "
+        query += "ON field.group_id = galois_group.group_id WHERE "
+        
+
+        first = True
+        for k, v in query_data.items():
+            if k == "transitive_group_id":
+                data = v
+                if data:
+                    if not first:
+                        query += " AND"
+                    else:
+                        first = False
+                    query += " galois_group.transitive_group_id = " + str(transitive_group_id)
+            elif k == "group_order_small_id":
+                data = v
+                if data:
+                    if not first:
+                        query += " AND"
+                    else:
+                        first = False
+                    group = group_order_small_id.split(',')
+                    group_order = group[0]
+                    small_group_id = group[1]
+                    query += " galois_group.group_order = " + str(group_order) + " AND" + " galois_group.small_group_id = " + str(small_group_id)
+        
+        if ',' not in input_degree:
+            query += " AND field.degree = " + str(input_degree)
+        else:
+            degree_range = input_degree.split(',')
+            query += " AND field.degree BETWEEN " + degree_range[0] + ' AND ' + degree_range[1] 
+
+
+        print(query)
+        cursor = connection.cursor()
+        cursor.execute(query)
+        polys = cursor.fetchall()
+
+        output_polys = []
+        output_discs = []
+        for i in range(len(polys)):
+            output_polys = output_polys + self.format_polynomials(polys[i])
+            output_discs.append(str(polys[i][1]))
+
+
+        return output_polys, output_discs
