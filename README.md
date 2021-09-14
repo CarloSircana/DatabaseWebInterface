@@ -40,6 +40,13 @@ First, we search for the group, meaning that we want the group_id (primary key i
 Otherwise, you perform the query in the field table searching for the fields with that group_id.
 You can assume that the order, degree and ids are all int.
 
+UPDATE:
+One single input field, called Galois group.
+The input can be of 2 forms:
+- nTk: n is the degree, k is the transitive group id. Example: "4T2" means degree 4 and transitive group id 2
+- [n, k]: n is the order of the group, k is the small group id. Example: [3, 1].
+ 
+
 Completeness data table:
 The user asks for a group (degree + transitive_group_id or degree + order + small_group_id) and a signature (r, s). (Sanity check: degree = r+2s, transitive_group_id > 0, order >0, small_group_id > 0). Retrieve the discriminant bound from the completeness table.
 You might get 2 answers, depending on the grh entry in the table.
