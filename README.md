@@ -48,9 +48,9 @@ The input can be of 2 forms:
  
 
 Completeness data table:
-The user asks for a group (degree + transitive_group_id or degree + order + small_group_id) and a signature (r, s). (Sanity check: degree = r+2s, transitive_group_id > 0, order >0, small_group_id > 0). Retrieve the discriminant bound from the completeness table.
-You might get 2 answers, depending on the grh entry in the table.
-Print them both (grh value and discriminant_bound), together with the group data given in input by the user. 
+The user asks for a group (nTk or [order, small_group_id]) and a signature (r, s). Retrieve the discriminant bound from the completeness table.
+You might get multiple answers, depending on the grh entry in the table.
+Print all of them (grh value and discriminant_bound), together with the group data given in input by the user. 
 
 
 Class group query
