@@ -46,9 +46,16 @@ You might get 2 answers, depending on the grh entry in the table.
 Print them both (grh value and discriminant_bound), together with the group data given in input by the user. 
 
 
+Class group query
+Two possibilities for the user:
+- class number (it is an integer >= 1)
+- class group structure (list of integers >= 1 with the property that each integer is a multiple of the previous entry in the list) (Example: [2, 4] is allowed, [2] is allowed, [2, 3] is not allowed, because 3 is not a multiple of 2)
+
+The class number corresponds to the entry "group_order" in the class group table. Careful: it might overflow. It is not a primary key, so there might be multiple entries in the table satisfying this property.
+The class group structure corresponds to the entry "structure" in the class group table. It is a primary key, so only one possible entry.
+As for the galois group queries, perform either a nested query or a double query, retrieving the class_group_id.
 
 Next steps:
-Add class group queries.
 Statistics page
 Completeness data queries.
 Source of data.
