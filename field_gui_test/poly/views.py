@@ -25,8 +25,9 @@ def output(request):
     input_cm = request.GET.get('cm')
     input_sig = request.GET.get('signature')
     galois_group = request.GET.get('galois_group')
+    class_group = request.GET.get('class_group')
 
-    if not input_degree and not input_disc and not input_cm and not input_sig and not galois_group:
+    if not input_degree and not input_disc and not input_cm and not input_sig and not galois_group and not class_group:
         return render(request, 'poly/index.html')
 
     poly = Helper()
@@ -69,7 +70,7 @@ def output(request):
     #     output_list = poly.signature_(sig[0],sig[1])
 
     
-    output_polys, output_discs = poly.raw_query(input_degree,input_disc, input_cm,r, galois_group)
+    output_polys, output_discs = poly.raw_query(input_degree,input_disc, input_cm,r, galois_group, class_group)
 
     output_list = zip(output_polys[:10], output_discs[:10])
 
@@ -79,7 +80,11 @@ def output(request):
     
     input_list = ['degree: ' + str(input_degree),'discriminant: ' + str(input_disc), 'cm: '+ str(input_cm), 'real_embeddings: ' + str(r), 'galois_group: ' + str(galois_group)]
     
-
+    if class_group:
+        if ',' in class_group:
+            input_list.append('class group structure: {' + str(class_group) + "}")
+        else:
+             input_list.append('class group id: ' + str(class_group))
     context = {'input_list': input_list, 'queryset': output_list }
     #print((polys[0]))
     #return HttpResponse(output)

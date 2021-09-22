@@ -1,4 +1,4 @@
-from .models import Field, GaloisGroup
+from .models import Field, GaloisGroup, ClassGroup
 from django.db import connection
 
 class Helper():
@@ -51,7 +51,7 @@ class Helper():
         #print(output_list)
         return output_list 
 
-    def format_galois_group(self, galois_group):
+    def query_galois_group(self, galois_group):
         query = " group_id ="
         if 'T' in galois_group:
             g_g = galois_group.split('T')
@@ -68,7 +68,7 @@ class Helper():
         return query        
     
     
-    def raw_query(self, input_degree = None, input_disc =None, input_cm=None, r =None, galois_group = None):
+    def raw_query(self, input_degree = None, input_disc =None, input_cm=None, r =None, galois_group = None, class_group = None):
 
         query_data = {}
         query_data['degree'] = input_degree
@@ -76,6 +76,7 @@ class Helper():
         query_data['cm'] = input_cm
         query_data["real embeddings"] = r
         query_data["galois_group"] = galois_group
+        query_data["class_group"] = class_group
 
 
         query = "SELECT polynomial, discriminant FROM field "
@@ -135,13 +136,25 @@ class Helper():
                         query += " AND"
                     else:
                         first = False
-                    query += self.format_galois_group(data)
+                    query += self.query_galois_group(data)
+            
+            elif k == "class_group":
+                data = v
+                if data:
+                    if not first:
+                        query += " AND"
+                    else:
+                        first = False
+                    if ',' not in data:
+                        query += " class_group_id = (SELECT class_group_id from class_group WHERE group_order =" + str(data) + " LIMIT 1)"
+                    else:
+                        query += " class_group_id = (SELECT class_group_id from class_group WHERE structure = '{" + str(data) + "}')"
                     
 
         print(query)
 
         cursor = connection.cursor()
-        cursor.execute(query + 'ORDER BY degree')
+        cursor.execute(query)
         polys = cursor.fetchall()
 
         output_polys = []
