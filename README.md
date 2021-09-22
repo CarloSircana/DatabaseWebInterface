@@ -25,6 +25,7 @@ UPDATE One single input field, called Galois group. The input can be of 2 forms
 
 nTk n is the degree, k is the transitive group id. Example 4T2 means degree 4 and transitive group id 2
 [n, k] n is the order of the group, k is the small group id. Example [3, 1].
+
 Completeness data table The user asks for a group (nTk or [order, small_group_id]) and a signature (r, s). Retrieve the discriminant bound from the completeness table. You might get multiple answers, depending on the grh entry in the table. Print all of them (grh value and discriminant_bound), together with the group data given in input by the user.
 
 Class group query Two possibilities for the user
