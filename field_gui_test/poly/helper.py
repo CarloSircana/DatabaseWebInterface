@@ -51,126 +51,31 @@ class Helper():
         #print(output_list)
         return output_list 
 
+    def format_galois_group(self, galois_group):
+        query = " group_id ="
+        if 'T' in galois_group:
+            g_g = galois_group.split('T')
+            degree = g_g[0]
+            transitive_group_id = g_g[1]
+            query += " (SELECT group_id FROM galois_group WHERE degree =" + str(degree) + " AND transitive_group_id =" + str(transitive_group_id) + ")"
 
-    def degree_(self, input_degree, input_rm = None):
-        if ',' in input_degree:
-            input_degree_range = input_degree.split(',')
-            input_degree_range = list(map(int, input_degree_range))
+        elif ',' in galois_group:
+            g_g = galois_group.split(',')
+            group_order = g_g[0]
+            small_group_id = g_g[1]
+            query += "(SELECT group_id FROM galois_group WHERE group_order=" + str(group_order) + " AND small_group_id = " + str(small_group_id) + ")"
 
-            degree_range = list(range(input_degree_range[0], input_degree_range[1]+1))
-            output_list = []
-            for i in degree_range:
-                if input_rm  == None:
-                    polys = Field.objects.values_list('polynomial', flat=True).filter(degree = i)
-                else:
-                    polys = Field.objects.values_list('polynomial', flat=True).filter(degree = i, real_embeddings = input_rm)
-                formatted_poly = self.format_polynomials(polys)
-                output_list = output_list + formatted_poly
-
-        else:
-            #input_degree = int(input_degree)
-            if input_rm  == None:
-                polys = Field.objects.values_list('polynomial', flat=True).filter(degree = input_degree)
-            else:
-                polys = Field.objects.values_list('polynomial', flat=True).filter(degree = input_degree).filter(real_embeddings = input_rm)
-            output_list = self.format_polynomials(polys)
-
-        print(len(polys[0]))
-        return output_list
-    
-    def disc_(self, input_disc):
-        if ',' in input_disc:
-            input_disc_range = input_disc.split(',')
-           
-            output_list = []
-            #for i in disc_range:
-            polys = Field.objects.values_list('polynomial', flat=True).filter(discriminant__range = (input_disc_range[0], input_disc_range[1]))
-
-            for i in range(len(polys)):
-                output_list.append(self.format_polynomials(polys[i]))
-            
-            
-            return output_list
-
-        else:
-            
-            polys = Field.objects.values_list('polynomial', flat=True).filter(discriminant = input_disc)
-            
-            output_list = self.format_polynomials(polys)
-
-        return output_list
-
-    def degree_disc_(self, input_disc,input_degree):
-        if ',' in input_disc and ',' not in input_degree:
-            input_disc_range = input_disc.split(',')
-            #input_disc_range = list(map(int, input_disc_range))
-
-            polys = Field.objects.values_list('polynomial',flat=True).filter(degree = input_degree, discriminant__range = (input_disc_range[0], input_disc_range[1]))
-            output_list = self.format_polynomials(polys)
-            
-            return output_list
-
-        elif ',' not in input_disc and ',' in input_degree:
-            degree_range = input_degree.split(',')
-            #input_degree_range = list(map(int, input_degree_range))
-
-            #degree_range = list(range(input_degree_range[0], input_degree_range[1]+1))
-            #output_list = []
-            #for i in degree_range:
-            polys = Field.objects.values_list('polynomial', flat=True).filter(degree__range = (degree_range[0], degree_range[1]), discriminant = input_disc)
-            output_list = self.format_polynomials(polys)
-            #output_list = output_list + formatted_poly
-
-            return output_list
-
-        elif ',' in input_disc and ',' in input_degree:
-            input_degree_range = input_degree.split(',')
-            input_degree_range = list(map(int, input_degree_range))
-            input_disc_range = input_disc.split(',')
-
-            degree_range = list(range(input_degree_range[0], input_degree_range[1]+1))
-            output_list = []
-            for i in degree_range:
-                polys = Field.objects.values_list('polynomial', flat=True).filter(degree = i)
-                polys = polys.filter(discriminant__range = (input_disc_range[0], input_disc_range[1]))
-                formatted_poly = self.format_polynomials(i,polys)
-                output_list = output_list + formatted_poly
-
-            return output_list
-        elif ',' not in input_degree and ',' not in input_disc:
-            polys = Field.objects.values_list('polynomial',flat=True).filter(degree = input_degree, discriminant = input_disc)
-            output_list = self.format_polynomials(input_degree, polys)
-            
-            return output_list
-
-    def cm_(self,input_cm):
-        polys = Field.objects.values_list('polynomial','degree').filter(cm = input_cm)
-        output_list = []
-        for i in range(len(polys)):
-                formatted_poly = self.format_polynomials(polys[i][-1],polys[i][:-1])
-                output_list = output_list + formatted_poly
-            
-        return output_list
-
-
-    def signature_(self,input_rm,input_s):
-        deg = int(input_rm) + 2*int(input_s)
-
-        polys = Field.objects.values_list('polynomial', flat=True).filter(degree = deg).filter(real_embeddings = input_rm)
-
-        output_list = self.format_polynomials(deg,polys)
-
-        return output_list
-
+        return query        
     
     
-    def raw_query(self, input_degree = None, input_disc =None, input_cm=None, r =None):
+    def raw_query(self, input_degree = None, input_disc =None, input_cm=None, r =None, galois_group = None):
 
         query_data = {}
         query_data['degree'] = input_degree
         query_data['discriminant'] = input_disc
         query_data['cm'] = input_cm
         query_data["real embeddings"] = r
+        query_data["galois_group"] = galois_group
 
 
         query = "SELECT polynomial, discriminant FROM field "
@@ -179,7 +84,7 @@ class Helper():
         for k, v in query_data.items():
             if k == "degree":
                 data = v
-                if data is not None and data != '':
+                if data:
                     if not first:
                         query += " AND"
                     else:
@@ -192,7 +97,7 @@ class Helper():
                         query += " degree BETWEEN " + degree_range[0] + ' AND ' + degree_range[1] 
             elif k == "discriminant":
                 data = v
-                if data is not None and data != '':
+                if data:
                     if not first:
                         query += " AND"
                     else:
@@ -205,7 +110,7 @@ class Helper():
                         query += " discriminant BETWEEN " + disc_range[0] + ' AND ' + disc_range[1] 
             elif k == "cm":
                 data = v
-                if  data is not None and data != '':
+                if  data:
                     if not first:
                         query += " AND"
                     else:
@@ -216,12 +121,22 @@ class Helper():
                         query += " cm = FALSE "
             elif k == "real embeddings":
                 data = v
-                if data is not None and data != '':
+                if data:
                     if not first:
                         query += " AND"
                     else:
                         first = False
                     query += " real_embeddings = " + str(data)
+
+            elif k == "galois_group":
+                data = v
+                if data:
+                    if not first:
+                        query += " AND"
+                    else:
+                        first = False
+                    query += self.format_galois_group(data)
+                    
 
         print(query)
 
@@ -245,64 +160,3 @@ class Helper():
         s = int(sig[1])
 
         return r,s
-
-    def galois_group_search(self, input_degree, transitive_group_id=None, group_order_small_id=None):
-
-        if group_order_small_id:
-            group = group_order_small_id.split(',')
-            group_order = group[0]
-            small_group_id = group[1]
-        
-        query_data = {}
-        query_data['degree'] = input_degree
-        query_data['transitive_group_id'] = transitive_group_id
-        query_data['group_order_small_id'] = group_order_small_id
-
-
-
-        query = "SELECT field.polynomial, field.discriminant FROM field INNER JOIN galois_group "
-        query += "ON field.group_id = galois_group.group_id WHERE "
-        
-
-        first = True
-        for k, v in query_data.items():
-            if k == "transitive_group_id":
-                data = v
-                if data:
-                    if not first:
-                        query += " AND"
-                    else:
-                        first = False
-                    query += " galois_group.transitive_group_id = " + str(transitive_group_id)
-            elif k == "group_order_small_id":
-                data = v
-                if data:
-                    if not first:
-                        query += " AND"
-                    else:
-                        first = False
-                    group = group_order_small_id.split(',')
-                    group_order = group[0]
-                    small_group_id = group[1]
-                    query += " galois_group.group_order = " + str(group_order) + " AND" + " galois_group.small_group_id = " + str(small_group_id)
-        
-        if ',' not in input_degree:
-            query += " AND field.degree = " + str(input_degree)
-        else:
-            degree_range = input_degree.split(',')
-            query += " AND field.degree BETWEEN " + degree_range[0] + ' AND ' + degree_range[1] 
-
-
-        print(query)
-        cursor = connection.cursor()
-        cursor.execute(query)
-        polys = cursor.fetchall()
-
-        output_polys = []
-        output_discs = []
-        for i in range(len(polys)):
-            output_polys = output_polys + self.format_polynomials(polys[i])
-            output_discs.append(str(polys[i][1]))
-
-
-        return output_polys, output_discs
