@@ -40,15 +40,29 @@ First, we search for the group, meaning that we want the group_id (primary key i
 Otherwise, you perform the query in the field table searching for the fields with that group_id.
 You can assume that the order, degree and ids are all int.
 
+UPDATE:
+One single input field, called Galois group.
+The input can be of 2 forms:
+- nTk: n is the degree, k is the transitive group id. Example: "4T2" means degree 4 and transitive group id 2
+- [n, k]: n is the order of the group, k is the small group id. Example: [3, 1].
+ 
+
 Completeness data table:
-The user asks for a group (degree + transitive_group_id or degree + order + small_group_id) and a signature (r, s). (Sanity check: degree = r+2s, transitive_group_id > 0, order >0, small_group_id > 0). Retrieve the discriminant bound from the completeness table.
-You might get 2 answers, depending on the grh entry in the table.
-Print them both (grh value and discriminant_bound), together with the group data given in input by the user. 
+The user asks for a group (nTk or [order, small_group_id]) and a signature (r, s). Retrieve the discriminant bound from the completeness table.
+You might get multiple answers, depending on the grh entry in the table.
+Print all of them (grh value and discriminant_bound), together with the group data given in input by the user. 
 
 
+Class group query
+Two possibilities for the user:
+- class number (it is an integer >= 1)
+- class group structure (list of integers >= 1 with the property that each integer is a multiple of the previous entry in the list) (Example: [2, 4] is allowed, [2] is allowed, [2, 3] is not allowed, because 3 is not a multiple of 2)
+
+The class number corresponds to the entry "group_order" in the class group table. Careful: it might overflow. It is not a primary key, so there might be multiple entries in the table satisfying this property.
+The class group structure corresponds to the entry "structure" in the class group table. It is a primary key, so only one possible entry.
+As for the galois group queries, perform either a nested query or a double query, retrieving the class_group_id.
 
 Next steps:
-Add class group queries.
 Statistics page
 Completeness data queries.
 Source of data.
