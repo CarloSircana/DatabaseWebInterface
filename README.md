@@ -1,5 +1,5 @@
 # DatabaseWebInterface
-Target Create a website for the database of number fields, similar to httpswww.lmfdb.orgNumberField or httpgaloisdb.math.upb.de.
+Target Create a website for the database of number fields, similar to https\\www.lmfdb.orgNumberField or http\\galoisdb.math.upb.de.
 
 Steps already done First simple queries by degree,signature, discriminant, cm property.
 
