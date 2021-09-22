@@ -34,3 +34,5 @@ class group structure (list of integers = 1 with the property that each integer 
 The class number corresponds to the entry group_order in the class group table. Careful it might overflow. It is not a primary key, so there might be multiple entries in the table satisfying this property. The class group structure corresponds to the entry structure in the class group table. It is a primary key, so only one possible entry. As for the galois group queries, perform either a nested query or a double query, retrieving the class_group_id.
 
 Next steps Statistics page Completeness data queries. Source of data.
+
+Note: class_group_id overflows, temporary solution limit 1
