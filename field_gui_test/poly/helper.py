@@ -1,4 +1,4 @@
-from .models import Field, GaloisGroup, ClassGroup
+from .models import Field, GaloisGroup, ClassGroup, Completeness
 from django.db import connection
 
 class Helper():
@@ -52,7 +52,7 @@ class Helper():
         return output_list 
 
     def query_galois_group(self, galois_group):
-        query = " group_id ="
+        query = ''
         if 'T' in galois_group:
             g_g = galois_group.split('T')
             degree = g_g[0]
@@ -68,7 +68,7 @@ class Helper():
         return query        
     
     
-    def raw_query(self, input_degree = None, input_disc =None, input_cm=None, r =None, galois_group = None, class_group = None):
+    def poly_query(self, input_degree = None, input_disc =None, input_cm=None, r =None, galois_group = None, class_group = None):
 
         query_data = {}
         query_data['degree'] = input_degree
@@ -136,7 +136,7 @@ class Helper():
                         query += " AND"
                     else:
                         first = False
-                    query += self.query_galois_group(data)
+                    query += " group_id =" + self.query_galois_group(data)
             
             elif k == "class_group":
                 data = v
@@ -173,3 +173,27 @@ class Helper():
         s = int(sig[1])
 
         return r,s
+
+    def completeness_query(self, r, galois_group):
+        
+        query_data = {}
+        query_data["real embeddings"] = r
+        query_data["galois_group"] = galois_group
+
+        query = "SELECT grh, discriminant_bound FROM completeness "
+        query += "WHERE real_embeddings = " + str(r) +" AND group_id =" + self.query_galois_group(galois_group)
+
+        print(query)
+        
+        cursor = connection.cursor()
+        cursor.execute(query)
+        output = cursor.fetchall()
+
+        output_grh = []
+        output_discs = []
+        for i in range(len(output)):
+            output_grh.append(str(output[i][0]))
+            output_discs.append(str(output[i][1]))
+
+
+        return output_grh, output_discs

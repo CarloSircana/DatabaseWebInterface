@@ -1,0 +1,17 @@
+<h3 >completeness</h3>
+  <ul>
+    {% for inputs in input_list %}
+      <li>
+        {{inputs}}
+      </li>
+    {% endfor %}
+  </ul>
+<table summary="">
+  <tr><th>grh</th><th>discriminant</th></tr>
+   {% for grh, discs in queryset %}   
+      <tr>   
+        <td>{{grh}}</td>
+        <td>{{discs}}</td>
+      </tr> 
+    {% endfor %}
+</table> 
