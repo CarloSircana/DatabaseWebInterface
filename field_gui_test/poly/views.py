@@ -32,42 +32,36 @@ def output(request):
 
     poly = Helper()
     
-    ## signature check
-    if input_sig: 
-        r,s = poly.format_signature(input_sig)
-        if r < 0 or s < 0:
-            return render(request, 'poly/index.html')
-
-        if input_degree == '' or input_degree == None:
-            input_degree = r+(2*s)
-            input_degree = str(input_degree)
-
-        elif r+(2*s) != int(input_degree):      
-            return render(request, 'poly/index.html')
-        elif ',' in input_degree:
-            return render(request, 'poly/index.html')
-
-    
 
     ## degree check
-    if input_degree: #!= '' and input_degree is not None:
-        if ',' not in input_degree:
-            if int(input_degree) < 1:   
+    if input_degree: 
+        if poly.degree_check(input_degree) == False:
+            return render(request, 'poly/index.html')
+
+    ## disc check
+    if input_disc:
+        if poly.disc_check(input_disc) == False:
+            return render(request, 'poly/index.html')
+
+    ## signature check
+    if input_sig: 
+        if input_degree: 
+            if poly.sig_check(input_sig, input_degree) == False:
                 return render(request, 'poly/index.html')
         else:
-            degree_range = input_degree.split(',')
-            if int(degree_range[0]) < 1 or int(degree_range[1]) < 1:
+            if poly.sig_check(input_sig) == False:
                 return render(request, 'poly/index.html')
+            else:
+                input_degree = poly.sig_check(input_sig)
 
+    
+    ## cm check
+    if input_cm:
+        if poly.cm_check(input_cm) == False:
+            return render(request, 'poly/index.html')
+    
 
-    # if input_degree != '' and input_disc == '':
-    #     output_list = poly.degree_(input_degree)
-    # elif input_degree == '' and input_disc != '':
-    #     output_list = poly.disc_(input_disc)
-    # elif input_degree != '' and input_disc != '':
-    #     output_list = poly.degree_disc_(input_disc,input_degree)
-    # else:
-    #     output_list = poly.signature_(sig[0],sig[1])
+    
 
     if 'poly' in request.GET:
         output_polys, output_discs = poly.poly_query(input_degree,input_disc, input_cm,r, galois_group, class_group)

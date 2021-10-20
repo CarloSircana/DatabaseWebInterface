@@ -59,6 +59,12 @@ class Helper():
             transitive_group_id = g_g[1]
             query += " (SELECT group_id FROM galois_group WHERE degree =" + str(degree) + " AND transitive_group_id =" + str(transitive_group_id) + ")"
 
+        elif 't' in galois_group:
+            g_g = galois_group.split('t')
+            degree = g_g[0]
+            transitive_group_id = g_g[1]
+            query += " (SELECT group_id FROM galois_group WHERE degree =" + str(degree) + " AND transitive_group_id =" + str(transitive_group_id) + ")"
+
         elif ',' in galois_group:
             g_g = galois_group.split(',')
             group_order = g_g[0]
@@ -116,10 +122,11 @@ class Helper():
                         query += " AND"
                     else:
                         first = False
-                    if data == 't':
-                        query += " cm = TRUE " 
-                    else:
+                    if data == 't' or data == 'T':
+                        query += " cm = TRUE "
+                    elif data == 'f' or data == 'F': 
                         query += " cm = FALSE "
+                    
             elif k == "real embeddings":
                 data = v
                 if data:
@@ -169,8 +176,12 @@ class Helper():
     
     def format_signature(self, input_sig):
         sig = input_sig.split(',')
-        r = int(sig[0])
-        s = int(sig[1])
+        try:
+            r = int(sig[0])
+            s = int(sig[1])
+        except ValueError:
+            r= -1
+            s = -1
 
         return r,s
 
@@ -197,3 +208,62 @@ class Helper():
 
 
         return output_grh, output_discs
+
+    def degree_check(self, input_degree):
+        if ',' not in input_degree:
+            try: 
+                if int(input_degree) < 1:   
+                    return False
+            except ValueError:
+                 return False
+                
+        else:
+            try:
+                degree_range = input_degree.split(',')
+                if int(degree_range[0]) < 1 or int(degree_range[1]) < 1:
+                    return False
+            except ValueError:
+                 return False
+        
+        return True
+
+    def sig_check(self, input_sig, input_degree=None):
+        r,s = self.format_signature(input_sig)
+        if r < 0 or s < 0:
+            return False
+
+        if input_degree == '' or input_degree == None:
+            input_degree = r+(2*s)
+            input_degree = str(input_degree)
+            return input_degree
+
+        elif r+(2*s) != int(input_degree):      
+            return False
+        elif ',' in input_degree:
+            return False
+
+        return True
+
+    def disc_check(self, input_disc):
+        if ',' not in input_disc:
+            try: 
+                int(input_disc)
+            except ValueError:
+                 return False        
+        else:
+            try:
+                disc_range = input_disc.split(',')
+                int(disc_range[0]) 
+                int(disc_range[1])               
+            except ValueError:
+                 return False
+        
+        return True
+
+    def cm_check(self,input_cm):
+        valid_values = ['t', 'T', 'f', 'F']
+        
+        if input_cm in valid_values:
+            return True
+        else:
+            return False

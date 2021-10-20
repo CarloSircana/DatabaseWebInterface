@@ -89,6 +89,20 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+
+#         'NAME': 'fields',
+
+#         'USER': 'mir',
+#         'PASSWORD': 'smallGroup',
+
+#         'HOST': '131.246.132.29',
+
+#         'PORT': '5432',
+#     }
+# }
 
 
 # Password validation
