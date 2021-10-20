@@ -1,4 +1,12 @@
 # DatabaseWebInterface
+python 3.9.6
+
+Setup and use: 
+1. clone. 
+2. create a virtual env using requirements.txt. 
+3. edit the database settings in settings.py. 
+4. run on local server, do python manage.py runserver 
+
 Target Create a website for the database of number fields, similar to www.lmfdb.orgNumberField or galoisdb.math.upb.de.
 
 Steps already done First simple queries by degree,signature, discriminant, cm property.
