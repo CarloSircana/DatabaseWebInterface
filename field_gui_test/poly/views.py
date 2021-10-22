@@ -59,6 +59,16 @@ def output(request):
     if input_cm:
         if poly.cm_check(input_cm) == False:
             return render(request, 'poly/index.html')
+
+    ## galois_group check
+    if galois_group:
+        if poly.galois_check(galois_group) == False:
+            return render(request, 'poly/index.html')
+
+    ## class_group_check
+    if class_group:
+        if poly.class_group_check(class_group) == False:
+            return render(request, 'poly/index.html')
     
 
     

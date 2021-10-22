@@ -122,9 +122,9 @@ class Helper():
                         query += " AND"
                     else:
                         first = False
-                    if data == 't' or data == 'T':
+                    if data == 't' or data == 'T' or data == 'True' or data == 'true':
                         query += " cm = TRUE "
-                    elif data == 'f' or data == 'F': 
+                    elif data == 'f' or data == 'F' or data == 'False' or data == 'false': 
                         query += " cm = FALSE "
                     
             elif k == "real embeddings":
@@ -176,6 +176,11 @@ class Helper():
     
     def format_signature(self, input_sig):
         sig = input_sig.split(',')
+        print(sig)
+        if len(sig) != 2:
+            r = -1
+            s = -1
+            return r,s
         try:
             r = int(sig[0])
             s = int(sig[1])
@@ -253,17 +258,64 @@ class Helper():
         else:
             try:
                 disc_range = input_disc.split(',')
-                int(disc_range[0]) 
-                int(disc_range[1])               
+                if len(disc_range) != 2:
+                    return False
+                for i in disc_range:
+                    int(i)                
             except ValueError:
                  return False
         
         return True
 
     def cm_check(self,input_cm):
-        valid_values = ['t', 'T', 'f', 'F']
+        valid_values = ['t', 'T', 'true', 'True', 'f', 'F', 'false', 'False']
         
         if input_cm in valid_values:
             return True
         else:
             return False
+
+    def galois_check(self, galois_group):
+
+        if 'T' in galois_group:
+            try:
+                g_g = galois_group.split('T')
+                int(g_g[0])
+                int(g_g[1])
+            except ValueError:
+                return False
+            
+
+        elif 't' in galois_group:
+            try:
+                g_g = galois_group.split('t')
+                int(g_g[0])
+                int(g_g[1])
+            except ValueError:
+                return False
+
+        elif ',' in galois_group:
+            try:
+                g_g = galois_group.split(',')
+                int(g_g[0])
+                int(g_g[1])
+            except ValueError:
+                return False
+        
+        return True
+    
+    def class_group_check(self, class_group):
+        if ',' not in class_group:
+            try: 
+                int(class_group)
+            except ValueError:
+                 return False        
+        else:
+            try:
+                class_group_structure = class_group.split(',')
+                for i in class_group_structure:
+                    int(i)                           
+            except ValueError:
+                 return False
+        
+        return True
