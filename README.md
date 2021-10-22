@@ -46,5 +46,4 @@ Next steps Statistics page Completeness data queries. Source of data.
 
 Note: class_group_id overflows, temporary solution limit 1, degree in galois_group and degree in field don't match
 
-To Do:
-galois_group and class_group check
+
