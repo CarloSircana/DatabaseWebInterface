@@ -157,7 +157,7 @@ class Helper():
                     else:
                         query += " class_group_id = (SELECT class_group_id from class_group WHERE structure = '{" + str(data) + "}')"
                     
-
+        query += " LIMIT 10"
         print(query)
 
         cursor = connection.cursor()
@@ -175,7 +175,12 @@ class Helper():
 
     
     def format_signature(self, input_sig):
-        sig = input_sig.split(',')
+        try:
+            sig = input_sig.split(',')
+        except ValueError:
+            r= -1
+            s = -1
+        
         print(sig)
         if len(sig) != 2:
             r = -1
@@ -268,7 +273,7 @@ class Helper():
         return True
 
     def cm_check(self,input_cm):
-        valid_values = ['t', 'T', 'true', 'True', 'f', 'F', 'false', 'False']
+        valid_values = ['t', 'T', 'true', 'True', 'TRUE', 'f', 'F', 'false', 'False', 'FALSE']
         
         if input_cm in valid_values:
             return True
@@ -284,7 +289,6 @@ class Helper():
                 int(g_g[1])
             except ValueError:
                 return False
-            
 
         elif 't' in galois_group:
             try:
@@ -301,7 +305,8 @@ class Helper():
                 int(g_g[1])
             except ValueError:
                 return False
-        
+        else:
+            return False
         return True
     
     def class_group_check(self, class_group):

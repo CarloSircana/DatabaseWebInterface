@@ -95,6 +95,10 @@ def output(request):
         return render(request, 'poly/output.html',context)
 
     elif 'completeness' in request.GET:
+        if not galois_group or not input_sig:
+            return render(request, 'poly/index.html')
+            
+        r = input_sig[0]
         output_grh, output_discs = poly.completeness_query(r, galois_group)
 
         output_list = zip(output_grh[:10], output_discs[:10])
