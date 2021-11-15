@@ -1,8 +1,8 @@
 <form action="{% url 'poly:output' %}" method="GET">
 {% csrf_token %}
-degree
+<!-- degree
 <fieldset>
-        <input type="text" name="degree" placeholder="degree = 2,3..." />       
+        <input type="text" name="degree" placeholder="degree = 2,3..."  />       
 </fieldset>
 discriminant
 <fieldset>
@@ -23,7 +23,10 @@ galois_group
 class_group
 <fieldset>
         <input type="text" name="class_group" placeholder="id = n or structure = n1,n2" />       
-</fieldset>
+</fieldset> -->
+<table>
+        {{ form.as_table }}
+</table>
 <input type="submit" value="polynomials" name="poly">
 <input type="submit" value="completeness" name="completeness">
 </form>

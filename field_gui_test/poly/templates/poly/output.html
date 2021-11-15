@@ -16,7 +16,12 @@
     {% endfor %}
 </table> 
 
-<a href="{{request.META.HTTP_REFERER}}"> <button>back</button></a>
+<!-- <a href="{{request.META.HTTP_REFERER|escape}}"> <button>back</button></a> -->
+
+<form action="{% url 'poly:index' %}" method="GET">
+  {% csrf_token %}
+<input type="submit" value="back" name="back">
+</form>
 
 <!-- <div class="row"> 
     <ul>
