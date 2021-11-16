@@ -285,6 +285,8 @@ class Helper():
         if 'T' in galois_group:
             try:
                 g_g = galois_group.split('T')
+                if len(g_g) != 2:
+                    return False
                 int(g_g[0])
                 int(g_g[1])
             except ValueError:
@@ -293,6 +295,8 @@ class Helper():
         elif 't' in galois_group:
             try:
                 g_g = galois_group.split('t')
+                if len(g_g) != 2:
+                    return False
                 int(g_g[0])
                 int(g_g[1])
             except ValueError:
@@ -301,6 +305,8 @@ class Helper():
         elif ',' in galois_group:
             try:
                 g_g = galois_group.split(',')
+                if len(g_g) != 2:
+                    return False
                 int(g_g[0])
                 int(g_g[1])
             except ValueError:
