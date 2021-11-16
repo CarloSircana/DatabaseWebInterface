@@ -230,6 +230,8 @@ class Helper():
         else:
             try:
                 degree_range = input_degree.split(',')
+                if len(degree_range) > 2:
+                    return False
                 if int(degree_range[0]) < 1 or int(degree_range[1]) < 1:
                     return False
             except ValueError:

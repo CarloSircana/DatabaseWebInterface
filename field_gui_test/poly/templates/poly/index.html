@@ -30,3 +30,8 @@ class_group
 <input type="submit" value="polynomials" name="poly">
 <input type="submit" value="completeness" name="completeness">
 </form>
+
+<form action="{% url 'poly:index' %}" method="GET">
+        {% csrf_token %}
+      <input type="submit" value="reset" name="reset">
+</form>
