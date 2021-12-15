@@ -16,4 +16,6 @@
     {% endfor %}
 </table> 
 
-<a href="{{request.META.HTTP_REFERER}}"> <button>back</button></a>
+<!-- <a href="{{request.META.HTTP_REFERER}}"> <button>back</button></a> -->
+
+<input type=submit value="back" onClick="javascript:history.go(-1);">
