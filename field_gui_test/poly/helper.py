@@ -234,6 +234,8 @@ class Helper():
                     return False
                 if int(degree_range[0]) < 1 or int(degree_range[1]) < 1:
                     return False
+                if int(degree_range[0]) > int(degree_range[1]):
+                    return False
             except ValueError:
                  return False
         
@@ -268,7 +270,9 @@ class Helper():
                 if len(disc_range) != 2:
                     return False
                 for i in disc_range:
-                    int(i)                
+                    int(i)        
+                if int(disc_range[0]) > int(disc_range[1]):
+                    return False
             except ValueError:
                  return False
         
@@ -291,8 +295,11 @@ class Helper():
                     return False
                 int(g_g[0])
                 int(g_g[1])
+                if int(g_g[0]) < 0 or int(g_g[1]) < 0:
+                    return False
             except ValueError:
                 return False
+            
 
         elif 't' in galois_group:
             try:
@@ -301,6 +308,8 @@ class Helper():
                     return False
                 int(g_g[0])
                 int(g_g[1])
+                if int(g_g[0]) < 0 or int(g_g[1]) < 0:
+                    return False
             except ValueError:
                 return False
 
@@ -311,6 +320,8 @@ class Helper():
                     return False
                 int(g_g[0])
                 int(g_g[1])
+                if int(g_g[0]) < 0 or int(g_g[1]) < 0:
+                    return False
             except ValueError:
                 return False
         else:
