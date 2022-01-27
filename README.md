@@ -46,4 +46,4 @@ Next steps Statistics page Completeness data queries. Source of data.
 
 Note: class_group_id overflows, temporary solution limit 1, degree in galois_group and degree in field don't match
 
-To Do: add error message for invalid input, back button keeps the input, add new clear inputs button in index page, check memory usage
+To Do: add download buttons in output page, as python readable list of tuples (polynomial,discriminant) (ex. x**3 + 1, 321), as row of coefficients (ex. [3,0,1],123) (check ordering), as julia readable list
