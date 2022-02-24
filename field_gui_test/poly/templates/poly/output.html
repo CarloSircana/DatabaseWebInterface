@@ -21,6 +21,27 @@
 
 <input type=submit value="back" onClick="javascript:history.go(-1);">
 
+
+
+<form action="{% url 'poly:download_py' %}" method="GET">
+  {% csrf_token %}
+  <input type="submit" value="download python readable tuples" name="download_py">
+</form>
+
+<form action="{% url 'poly:download_jl' %}" method="GET">
+  {% csrf_token %}
+  <input type="submit" value="download julia readable tuples" name="download_jl">
+</form>
+
+<form action="{% url 'poly:download_coeff' %}" method="GET">
+  {% csrf_token %}
+  <input type="submit" value="download raw coefficients in reverse order" name="download_coeff">
+</form>
+
+
+<p> All download buttons download a text file of 10 polynomials and discriminants</p>
+<!-- <a href="{% url 'poly:download_py' %}">download</a> -->
+
 <!-- <form action="{% url 'poly:index' %}" method="GET">
   {% csrf_token %}
 <input type="submit" value="back" name="back">

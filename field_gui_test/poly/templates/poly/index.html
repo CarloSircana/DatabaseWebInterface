@@ -1,29 +1,6 @@
 <form action="{% url 'poly:output' %}" method="GET">
 {% csrf_token %}
-<!-- degree
-<fieldset>
-        <input type="text" name="degree" placeholder="degree = 2,3..."  />       
-</fieldset>
-discriminant
-<fieldset>
-        <input type="text" name="discriminant" placeholder="discriminant = -1000,-1 ..." />       
-</fieldset>
-cm
-<fieldset>
-        <input type="text" name="cm" placeholder="cm = t or f" />       
-</fieldset>
-signature
-<fieldset>
-        <input type="text" name="signature" placeholder="signature = 1,1 ..." />       
-</fieldset>
-galois_group
-<fieldset>
-        <input type="text" name="galois_group" placeholder="nTk or n,k" />       
-</fieldset>
-class_group
-<fieldset>
-        <input type="text" name="class_group" placeholder="id = n or structure = n1,n2" />       
-</fieldset> -->
+
 <table>
         {{ form.as_table }}
 </table>

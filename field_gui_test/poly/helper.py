@@ -10,7 +10,7 @@ class Helper():
         #input_degree = int(input_degree)
         superscript = str.maketrans("0123456789", "⁰¹²³⁴⁵⁶⁷⁸⁹")
         list_of_x = []
-        for i in range(len(polys[0])):
+        for i in range(len(polys)):
             if i >= 2:
                 list_of_x.append(f'x{i}'.translate(superscript))
             elif i ==1 or i == -1:
@@ -22,7 +22,7 @@ class Helper():
         ## put the coeffs(polys) and list_of_x together to form output string
         output_list = []
         #for i in range(len(polys)):
-        poly_order = polys[0]
+        poly_order = polys
         #print(poly_order)
         poly_order = poly_order[::-1]
         #print(poly_order)
@@ -113,7 +113,7 @@ class Helper():
                         query += " discriminant =" + data
                     else:
                         disc_range = data.split(',')
-                        print(disc_range)
+                        # print(disc_range)
                         query += " discriminant BETWEEN " + disc_range[0] + ' AND ' + disc_range[1] 
             elif k == "cm":
                 data = v
@@ -167,10 +167,10 @@ class Helper():
         output_polys = []
         output_discs = []
         for i in range(len(polys)):
-            output_polys = output_polys + self.format_polynomials(polys[i])
+            output_polys.append(polys[i][0]) #= output_polys + self.format_polynomials(polys[i])
             output_discs.append(str(polys[i][1]))
 
-
+        # print(output_polys)
         return output_polys, output_discs
 
     
@@ -181,7 +181,7 @@ class Helper():
             r= -1
             s = -1
         
-        print(sig)
+        # print(sig)
         if len(sig) != 2:
             r = -1
             s = -1
@@ -343,3 +343,101 @@ class Helper():
                  return False
         
         return True
+
+    def format_download_py(self,polys):
+        ## generate list_of_x for polynomial
+        #input_degree = int(input_degree)
+        # superscript = str.maketrans("0123456789", "⁰¹²³⁴⁵⁶⁷⁸⁹")
+        list_of_x = []
+        for i in range(len(polys)):
+            if i >= 2:
+                list_of_x.append(f'x**{i}'.format(i))
+            elif i ==1 or i == -1:
+                list_of_x.append('x')
+            else:
+                list_of_x.append('')
+        list_of_x = list_of_x[::-1]
+        
+        ## put the coeffs(polys) and list_of_x together to form output string
+        output_list = []
+        #for i in range(len(polys)):
+        poly_order = polys
+        #print(poly_order)
+        poly_order = poly_order[::-1]
+        #print(poly_order)
+        poly_str = []
+        for j in range(len(list_of_x )):
+            if poly_order[j] != 0:
+                if poly_order[j] >= 2 and j != 0:
+                    poly_str.append("+" + str(poly_order[j])+list_of_x[j])
+                elif poly_order[j] >= 2 and j == 0:
+                    poly_str.append(str(poly_order[j])+list_of_x[j])
+                elif poly_order[j] == 1 and list_of_x[j] != '' and j != 0:
+                    poly_str.append("+" +list_of_x[j])
+                elif poly_order[j] == 1 and list_of_x[j] != '' and j == 0:
+                    poly_str.append(list_of_x[j])
+                elif list_of_x[j] == '' and poly_order[j] > 0:
+                    poly_str.append("+" +str(poly_order[j]))
+                elif poly_order[j] == -1 and list_of_x[j] != '':
+                    poly_str.append("-" +list_of_x[j])
+                elif list_of_x[j] == '':
+                    poly_str.append(str(poly_order[j]))
+                else:
+                    poly_str.append(str(poly_order[j])+list_of_x[j])
+        output_list.append(''.join(poly_str))
+    
+        #output_list = output_list[::-1]
+        #print(output_list)
+        return output_list
+
+    def format_download_jl(self,polys):
+        ## generate list_of_x for polynomial
+        #input_degree = int(input_degree)
+        # superscript = str.maketrans("0123456789", "⁰¹²³⁴⁵⁶⁷⁸⁹")
+        list_of_x = []
+        for i in range(len(polys)):
+            if i >= 2:
+                list_of_x.append(f'x^{i}'.format(i))
+            elif i ==1 or i == -1:
+                list_of_x.append('x')
+            else:
+                list_of_x.append('')
+        list_of_x = list_of_x[::-1]
+        
+        ## put the coeffs(polys) and list_of_x together to form output string
+        output_list = []
+        #for i in range(len(polys)):
+        poly_order = polys
+        #print(poly_order)
+        poly_order = poly_order[::-1]
+        #print(poly_order)
+        poly_str = []
+        for j in range(len(list_of_x )):
+            if poly_order[j] != 0:
+                if poly_order[j] >= 2 and j != 0:
+                    poly_str.append("+" + str(poly_order[j])+list_of_x[j])
+                elif poly_order[j] >= 2 and j == 0:
+                    poly_str.append(str(poly_order[j])+list_of_x[j])
+                elif poly_order[j] == 1 and list_of_x[j] != '' and j != 0:
+                    poly_str.append("+" +list_of_x[j])
+                elif poly_order[j] == 1 and list_of_x[j] != '' and j == 0:
+                    poly_str.append(list_of_x[j])
+                elif list_of_x[j] == '' and poly_order[j] > 0:
+                    poly_str.append("+" +str(poly_order[j]))
+                elif poly_order[j] == -1 and list_of_x[j] != '':
+                    poly_str.append("-" +list_of_x[j])
+                elif list_of_x[j] == '':
+                    poly_str.append(str(poly_order[j]))
+                else:
+                    poly_str.append(str(poly_order[j])+list_of_x[j])
+        output_list.append(''.join(poly_str))
+    
+        #output_list = output_list[::-1]
+        #print(output_list)
+        return output_list
+
+    
+
+
+
+    
