@@ -155,7 +155,7 @@ class Helper():
                     if ',' not in data:
                         query += " class_group_id = (SELECT class_group_id from class_group WHERE group_order =" + str(data) + " LIMIT 1)"
                     else:
-                        query += " class_group_id = (SELECT class_group_id from class_group WHERE structure = '{" + str(data) + "}')"
+                        query += " class_group_id = (SELECT class_group_id from class_group WHERE structure = '" + str(data) + "')"
                     
         query += " LIMIT 10"
         print(query)
@@ -330,18 +330,40 @@ class Helper():
     
     def class_group_check(self, class_group):
         if ',' not in class_group:
-            try: 
+            try:
                 int(class_group)
+                if int(class_group) < 0:
+                    return False
             except ValueError:
                  return False        
         else:
             try:
+                if class_group[0] == "{":
+                    class_group = class_group.replace('{','')
+                else:
+                    return False
+                if class_group[-1] == "}":
+                    class_group = class_group.replace('}','')
+                else:
+                    return False           
                 class_group_structure = class_group.split(',')
                 for i in class_group_structure:
-                    int(i)                           
+                    if int(i) < 0:
+                        return False
+                if self.class_group_structure_check(class_group_structure) == False:
+                    return False
             except ValueError:
                  return False
         
+        return True
+
+    def class_group_structure_check(self, class_group_structure):
+
+        for i in range(1,len(class_group_structure)):
+            if int(class_group_structure[i]) % int(class_group_structure[0]) == 0:
+                pass
+            else: 
+                return False
         return True
 
     def format_download_py(self,polys):
@@ -385,9 +407,10 @@ class Helper():
                 else:
                     poly_str.append(str(poly_order[j])+list_of_x[j])
         output_list.append(''.join(poly_str))
-    
+
+        
         #output_list = output_list[::-1]
-        #print(output_list)
+        # print(output_list)
         return output_list
 
     def format_download_jl(self,polys):

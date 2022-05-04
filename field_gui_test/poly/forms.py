@@ -42,6 +42,18 @@ class InputForm(forms.Form):
                 except ValueError:
                     pass
     
+    def class_group_validation(value):
+        helper = Helper()
+        v = helper.class_group_check(value)
+
+        if v == True:
+            pass
+        else:
+            raise ValidationError(
+                _('enter positive whole number(s), for structure: the first number must be divisible by all others and start and end with braces'), code = 'invalid',
+                params={'value': value},)
+       
+    
     degree = forms.CharField(help_text='e.g. 2', required=False, 
         validators=[val.int_list_validator(sep=',', message='enter positive whole number(s)', code='invalid', allow_negative=False), degree_disc_validation])
     
@@ -58,8 +70,8 @@ class InputForm(forms.Form):
         validators= [galois_validation] )
         # val.RegexValidator(regex=re.compile('[,|t|T]'), message='enter two numbers seperated by comma, T or t', code = 'invalid'), 
         # [val.int_list_validator(sep=',' or 't' or 'T', message='enter positive whole numbers', code='invalid', allow_negative=False),
-    class_group = forms.CharField(help_text='id = 1 or structure = 2,4 ...', required=False, 
-        validators=[val.int_list_validator(sep=',', message='enter whole number(s)', code='invalid', allow_negative=False)])
+    class_group = forms.CharField(help_text='e.g. number = 1 or structure = {2,4 ...}, for structure: open and close with braces ({})', required=False, 
+        validators=[class_group_validation])
 
     
     

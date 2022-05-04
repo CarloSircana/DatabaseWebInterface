@@ -132,7 +132,7 @@ class OutputView(View):
             
             if self.class_group:
                 if ',' in self.class_group:
-                    input_list.append('class group structure: {' + str(self.class_group) + "}")
+                    input_list.append('class group structure: ' + str(self.class_group) )
                 else:
                     input_list.append('class group id: ' + str(self.class_group))
 
@@ -214,9 +214,22 @@ class DownloadPyView(OutputView, View):
         for i in output_polys:
             formatted_polys = formatted_polys + helper.format_download_py(i)
 
+        
+        # for i in range(len(formatted_polys)):
+        #     formatted_polys[i] = 
+
+        # for i in range(len(output_discs)):
+            # output_discs[i] = 
+        
+        print(*formatted_polys,*output_discs, sep = ',')
+        
         output_list = zip(formatted_polys, output_discs)
+        
+
 
         response.writelines(output_list)
+
+       
         
         return response
     def get(self, request):
