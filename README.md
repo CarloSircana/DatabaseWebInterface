@@ -46,4 +46,8 @@ Next steps Statistics page Completeness data queries. Source of data.
 
 Note: class_group_id overflows, temporary solution limit 1, degree in galois_group and degree in field don't match
 
-To Do: add download buttons in output page, as python readable list of tuples (polynomial,discriminant) (ex. x**3 + 1, 321), as row of coefficients (ex. [3,0,1],123) (check ordering) text file, as julia readable list (ex. x^3 + 1, 321)
+done: download buttons in output page, as python readable list of tuples (polynomial,discriminant) (ex. x**3 + 1, 321), as row of coefficients (ex. [3,0,1],123) (check ordering) text file, as julia readable list (ex. x^3 + 1, 321),
+
+To Do: 1) make a list of tuples, for py and jl, get rid of quotations. print on the screen as well, in same formats. 
+2) basic stats: which degrees, which discs for each degree, put it in index page
+3) class group structure entry verification and formatting (braces). change class group id to number, specify how to look for structure (use braces). 
