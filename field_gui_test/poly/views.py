@@ -22,7 +22,7 @@ def index(request):
     #degree = polys.get_degree()
     #output = '\n'.join([str(q.degree) for q in degree])
     
-    cache.clear()
+    # cache.clear()
     form = InputForm(request.GET)
 
 
@@ -213,21 +213,27 @@ class DownloadPyView(OutputView, View):
 
         for i in output_polys:
             formatted_polys = formatted_polys + helper.format_download_py(i)
-
-        
-        # for i in range(len(formatted_polys)):
-        #     formatted_polys[i] = 
-
-        # for i in range(len(output_discs)):
-            # output_discs[i] = 
-        
-        print(*formatted_polys,*output_discs, sep = ',')
-        
-        output_list = zip(formatted_polys, output_discs)
+            # formatted_polys.append(helper.format_download_py(i))
         
 
+        op = []
+        for i in range(len(formatted_polys)):
+            op.append((formatted_polys[i], output_discs[i]))
 
-        response.writelines(output_list)
+        # print(op)
+        output_str = '['
+        for i in op:
+            p = ('(' + ', '.join(i) + ')')
+            p = p +','
+            output_str = output_str + p
+
+        output_str = output_str.rstrip(',')
+        output_str = output_str + ']'
+
+        print(output_str)
+
+       
+        response.write(output_str)
 
        
         
@@ -271,9 +277,28 @@ class DownloadJlView(OutputView, View):
         for i in output_polys:
             formatted_polys = formatted_polys + helper.format_download_jl(i)
 
-        output_list = zip(formatted_polys, output_discs)
+        # output_list = zip(formatted_polys, output_discs)
 
-        response.writelines(output_list)
+        # response.writelines(output_list)
+
+        op = []
+        for i in range(len(formatted_polys)):
+            op.append((formatted_polys[i], output_discs[i]))
+
+        # print(op)
+        output_str = '['
+        for i in op:
+            p = ('(' + ', '.join(i) + ')')
+            p = p +','
+            output_str = output_str + p
+
+        output_str = output_str.rstrip(',')
+        output_str = output_str + ']'
+
+        print(output_str)
+
+       
+        response.write(output_str)
         
         return response
     def get(self, request):
