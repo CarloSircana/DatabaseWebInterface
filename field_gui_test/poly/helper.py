@@ -360,7 +360,7 @@ class Helper():
     def class_group_structure_check(self, class_group_structure):
 
         for i in range(1,len(class_group_structure)):
-            if int(class_group_structure[i]) % int(class_group_structure[0]) == 0:
+            if int(class_group_structure[i]) % int(class_group_structure[i-1]) == 0:
                 pass
             else: 
                 return False

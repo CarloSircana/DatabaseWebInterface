@@ -44,9 +44,11 @@ class OutputView(View):
 
     def input_format(self,input_list):
         input_values = []
+        
         for i in input_list:
             val = i.split(': ')
             input_values.append(val[1])
+        
         
         return input_values
         
@@ -185,6 +187,9 @@ class DownloadPyView(OutputView, View):
         helper = Helper()    
 
         input_list = cache.get('inputs')
+
+        if not input_list:
+            return index(request)
         
         query_values = OutputView.input_format(self, input_list)
 
@@ -235,10 +240,12 @@ class DownloadPyView(OutputView, View):
        
         response.write(output_str)
 
-       
+        context = {'output_str': output_str}
         
         return response
+
     def get(self, request):
+        print(request.GET)
         return self.download_py(request)
 
 class DownloadJlView(OutputView, View):
@@ -250,6 +257,9 @@ class DownloadJlView(OutputView, View):
         helper = Helper()    
 
         input_list = cache.get('inputs')
+        
+        if not input_list:
+            return index(request)
         
         query_values = OutputView.input_format(self, input_list)
 
@@ -297,10 +307,11 @@ class DownloadJlView(OutputView, View):
 
         print(output_str)
 
-       
+        context = {'output_str': output_str}
         response.write(output_str)
         
         return response
+
     def get(self, request):
         return self.download_jl(request)
 

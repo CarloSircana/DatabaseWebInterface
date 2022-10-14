@@ -50,7 +50,7 @@ class InputForm(forms.Form):
             pass
         else:
             raise ValidationError(
-                _('enter positive whole number(s), for structure: the first number must be divisible by all others and start and end with braces'), code = 'invalid',
+                _('enter positive whole number(s), for structure: all the numbers must be divisible by the previous entry in the sequence, and start and end with braces'), code = 'invalid',
                 params={'value': value},)
        
     
